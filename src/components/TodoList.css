@@ -1,0 +1,17 @@
+.TodoList {
+    display: flex;
+    flex-direction: column;
+}
+.task {
+    color: #abd5d1;
+    font-size: 30px;
+    text-align: center;
+    text-decoration: none;
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 300px;
+}
+.task:hover {
+    background-color: #96be8c;
+    border-radius: 10px;
+}
