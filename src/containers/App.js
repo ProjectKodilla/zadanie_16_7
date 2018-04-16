@@ -1,55 +1,53 @@
-import React from 'react';
-import uuid from 'uuid';
-import style from './App.css';
-import Title from '../components/Title';
-import TodoList from '../components/TodoList';
+import React from "react";
+import uuid from "uuid";
+import style from "./App.css";
+import Title from "./../components/Title.js";
+import TodoList from "./../components/TodoList.js";
+import TodoForm from "./../components/TodoForm.js";
 
 class App extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
-            data: [{
-                id: 1,
-                text: 'clean room',
-                remove: this.removeTodo.bind(this)
-            }, {
-                id: 2,
-                text: 'wash the dishes',
-                remove: this.removeTodo.bind(this)
-            }, {
-                id: 3,
-                text: 'feed my cat',
-                remove: this.removeTodo.bind(this)
-            }]
+            data: [],
+            input: ""
         };
     }
-
     addTodo(val) {
-        const todo = {
-            text: val,
-            id: uuid.v4(),
-        };
-        const data = [...this.state.data, todo];
+        if (this.state.input.length > 0) {
+            const todo = {
+                text: val,
+                id: uuid.v4()
+            };
+            const data = [...this.state.data, todo];
+            this.setState({ data });
+            this.setState({
+                input: ""
+            });
+        }
+    }
+    onChangeHandler(event) {
+        let task = event.target.value;
         this.setState({
-            data
+            input: task
         });
     }
-    
     removeTodo(id) {
-        const remainder = this.state.data.filter(todo => todo.id !== id);
-        this.setState({
-            data: remainder
-        });
+        const remainder = this.state.data.filter((todo) => todo.id !== id);
+        this.setState({ data: remainder });
     }
-
     render() {
         return (
             <div className={style.TodoApp}>
-                <Title title="Tytuł aplikacji" />
-                <p className={style.number}>Number of tasks on my list: {this.state.data.length}</p>
-                <TodoList list={this.state.data} />
-
-            </div> 
+            <Title counter={this.state.data.length} />
+            <TodoList items={this.state.data} remove={this.removeTodo.bind(this)} />
+            <TodoForm
+            input={this.state.input}
+            submit={this.addTodo.bind(this)}
+            fill={this.onChangeHandler.bind(this)}
+            value={this.state.input}
+            />
+            </div>
         );
     }
 }
